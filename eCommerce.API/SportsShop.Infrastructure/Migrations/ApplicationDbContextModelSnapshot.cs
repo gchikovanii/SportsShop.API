@@ -127,6 +127,9 @@ namespace SportsShop.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ShortTitle")
                         .HasColumnType("nvarchar(max)");
 
@@ -136,6 +139,30 @@ namespace SportsShop.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("SportsShop.Domain.Entities.ProductAggregate.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImage");
                 });
 
             modelBuilder.Entity("SportsShop.Domain.Entities.UserAggregte.AppRole", b =>
@@ -183,12 +210,21 @@ namespace SportsShop.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -318,6 +354,17 @@ namespace SportsShop.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SportsShop.Domain.Entities.ProductAggregate.ProductImage", b =>
+                {
+                    b.HasOne("SportsShop.Domain.Entities.ProductAggregate.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("SportsShop.Domain.Entities.UserAggregte.AppUserRole", b =>
                 {
                     b.HasOne("SportsShop.Domain.Entities.UserAggregte.AppRole", "Role")
@@ -346,6 +393,11 @@ namespace SportsShop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SportsShop.Domain.Entities.ProductAggregate.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("SportsShop.Domain.Entities.UserAggregte.AppRole", b =>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using SportsShop.Domain.Entities.UserAggregte.Details;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,8 @@ namespace SportsShop.Domain.Entities.UserAggregte
     {
         public ICollection<AppUserRole> AppUserRoles { get; set; }
         public Address Address { get; set; }
+        public DateTime DOB { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

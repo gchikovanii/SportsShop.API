@@ -26,6 +26,10 @@ namespace SportsShop.Infrastructure.DataContext
 
 
             builder.Entity<Product>().HasKey(i => i.Id);
+            builder.Entity<ProductImage>().HasKey(i => i.Id);
+            builder.Entity<Address>().HasKey(i => i.Id);
+
+
             builder.Entity<AppUser>()
                 .HasMany(i => i.AppUserRoles)
                 .WithOne(i => i.User)
@@ -38,6 +42,11 @@ namespace SportsShop.Infrastructure.DataContext
             builder.Entity<AppUser>()
                 .HasOne(i => i.Address)
                 .WithOne(i => i.User);
+            builder.Entity<Product>()
+                .HasMany(i => i.Images)
+                .WithOne(i => i.Product)
+                .HasForeignKey(i => i.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
 

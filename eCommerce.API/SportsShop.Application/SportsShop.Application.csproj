@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,16 +12,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
   </ItemGroup>
 
+	
+	
   <ItemGroup>
     <ProjectReference Include="..\SportsShop.Infrastructure\SportsShop.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Command\" />
-    <Folder Include="Models\" />
-    <Folder Include="Quries\" />
-    <Folder Include="Services\Abstraction\" />
-    <Folder Include="Services\Implementation\" />
-  </ItemGroup>
+	
 
 </Project>
