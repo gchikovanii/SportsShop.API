@@ -48,6 +48,12 @@ namespace SportsShop.Infrastructure.DataContext
                 .HasForeignKey(i => i.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<AppUser>()
+                .HasMany(i => i.Orders)
+                .WithOne(i => i.Buyer)
+                .HasForeignKey(i => i.BuyerId);
+
+
         }
 
 

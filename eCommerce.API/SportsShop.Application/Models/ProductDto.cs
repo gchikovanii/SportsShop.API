@@ -16,6 +16,7 @@ namespace SportsShop.Application.Models
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string Brand { get; set; }
+        public int Quantity { get; set; }
         public Types Types { get; set; }
         public List<ProductImage> Images { get; set; }
     }

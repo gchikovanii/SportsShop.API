@@ -28,7 +28,6 @@ namespace SportsShop.Application.Command.UserAggregate.Account
             var checkPassword = await _signInManager.PasswordSignInAsync(user, request.Password, true, false);
             var roles = await _userManager.GetRolesAsync(user);
             return _jwtAuthentication.Authenticate(checkPassword.Succeeded, request.Email, roles.ToList());
-           
         }
     }
 }

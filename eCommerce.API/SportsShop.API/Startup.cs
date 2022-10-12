@@ -107,6 +107,7 @@ namespace SportsShop.API
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductImageRepository, ProductImageRepository>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

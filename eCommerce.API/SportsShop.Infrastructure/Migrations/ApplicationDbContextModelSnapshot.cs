@@ -110,6 +110,122 @@ namespace SportsShop.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.DeliveryMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DeliveryTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeliveryMethod");
+                });
+
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("BuyerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DeliveryMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("OrderDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("ShippingAddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("DeliveryMethodId");
+
+                    b.HasIndex("ShippingAddressId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ItemOrderedId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemOrderedId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.ProductItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductItem");
+                });
+
             modelBuilder.Entity("SportsShop.Domain.Entities.ProductAggregate.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -129,6 +245,9 @@ namespace SportsShop.Infrastructure.Migrations
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("ShortTitle")
                         .HasColumnType("nvarchar(max)");
@@ -354,6 +473,42 @@ namespace SportsShop.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.Order", b =>
+                {
+                    b.HasOne("SportsShop.Domain.Entities.UserAggregte.AppUser", "Buyer")
+                        .WithMany("Orders")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportsShop.Domain.Entities.OrderAggregate.DeliveryMethod", "DeliveryMethod")
+                        .WithMany()
+                        .HasForeignKey("DeliveryMethodId");
+
+                    b.HasOne("SportsShop.Domain.Entities.UserAggregte.Details.Address", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId");
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("DeliveryMethod");
+
+                    b.Navigation("ShippingAddress");
+                });
+
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.OrderItem", b =>
+                {
+                    b.HasOne("SportsShop.Domain.Entities.OrderAggregate.ProductItem", "ItemOrdered")
+                        .WithMany()
+                        .HasForeignKey("ItemOrderedId");
+
+                    b.HasOne("SportsShop.Domain.Entities.OrderAggregate.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("ItemOrdered");
+                });
+
             modelBuilder.Entity("SportsShop.Domain.Entities.ProductAggregate.ProductImage", b =>
                 {
                     b.HasOne("SportsShop.Domain.Entities.ProductAggregate.Product", "Product")
@@ -395,6 +550,11 @@ namespace SportsShop.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SportsShop.Domain.Entities.OrderAggregate.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
             modelBuilder.Entity("SportsShop.Domain.Entities.ProductAggregate.Product", b =>
                 {
                     b.Navigation("Images");
@@ -410,6 +570,8 @@ namespace SportsShop.Infrastructure.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("AppUserRoles");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

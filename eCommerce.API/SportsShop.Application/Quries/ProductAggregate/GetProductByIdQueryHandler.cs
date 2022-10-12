@@ -32,6 +32,7 @@ namespace SportsShop.Application.Quries.ProductAggregate
                 Brand = product.Brand,
                 Types = product.Types,
                 Price = product.Price,
+                Quantity = product.Quantity,
                 Images = product.Images.Select(i => new ProductImage()
                 {
                     PublicId = i.PublicId,
