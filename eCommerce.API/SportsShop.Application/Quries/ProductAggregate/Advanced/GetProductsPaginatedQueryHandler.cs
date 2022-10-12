@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SportsShop.Application.Quries.ProductAggregate
+namespace SportsShop.Application.Quries.ProductAggregate.Advanced
 {
     public class GetProductsPaginatedQueryHandler : IRequestHandler<GetProductsPaginatedQuery, List<ProductDto>>
     {
@@ -22,8 +22,8 @@ namespace SportsShop.Application.Quries.ProductAggregate
         public async Task<List<ProductDto>> Handle(GetProductsPaginatedQuery request, CancellationToken cancellationToken)
         {
             var products = await _productRepository.GetQuery().Include(i => i.Images).Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
-            
-            if(request.PageIndex != 0)
+
+            if (request.PageIndex != 0)
             {
                 var result = products.Select(product => new ProductDto()
                 {
@@ -45,7 +45,7 @@ namespace SportsShop.Application.Quries.ProductAggregate
             }
             return null;
 
-            
+
         }
     }
 }

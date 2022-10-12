@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SportsShop.Application.Quries.ProductAggregate
+namespace SportsShop.Application.Quries.ProductAggregate.Advanced
 {
     public class GetProductsPaginatedQuery : IRequest<List<ProductDto>>
     {

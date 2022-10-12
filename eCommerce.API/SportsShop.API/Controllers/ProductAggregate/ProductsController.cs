@@ -6,14 +6,15 @@ using SportsShop.Application.Command.ProductAggregate;
 using SportsShop.Application.Command.ProductAggregate.ProductImages;
 using SportsShop.Application.Filters;
 using SportsShop.Application.Quries.ProductAggregate;
+using SportsShop.Application.Quries.ProductAggregate.Advanced;
 using System.Threading.Tasks;
 
 namespace SportsShop.API.Controllers.ProductAggregate
 {
-    public class ProductController : BaseController
+    public class ProductsController : BaseController
     {
         private readonly IMediator _mediator;
-        public ProductController(IMediator mediator)
+        public ProductsController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -32,14 +33,7 @@ namespace SportsShop.API.Controllers.ProductAggregate
             return Ok(await _mediator.Send(new GetProducsQuery()));
         }
 
-        [Authorize(Roles = UserType.AdminUser)]
-        [HttpGet(nameof(GetPaginatedProducts))]
-        public async Task<IActionResult> GetPaginatedProducts([FromQuery] GetProductsPaginatedQuery input)
-        {
-            return Ok(await _mediator.Send(input));
-        }
-
-        [Authorize(Roles = UserType.Admin)]
+        
         [HttpPost]
         public async Task<IActionResult> UploadProduct([FromQuery] UploadProductCommand input)
         {
